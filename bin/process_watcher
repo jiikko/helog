@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+# TODO USAGE
+
+ProcessWatcher.run(heroku_app_name: ARGV[0], logfilename: ARGV[1])

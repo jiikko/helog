@@ -1,11 +1,9 @@
 require "spec_helper"
 
 RSpec.describe ProcessWatcher do
-  it "has a version number" do
-    expect(ProcessWatcher::VERSION).not_to be nil
+  describe '監視対象のプロセスが何も書き込まなくなったら再起動する' do
   end
 
-  it "does something useful" do
-    expect(false).to eq(true)
+  describe '監視対象のプロセスが終了したら再起動する' do
   end
 end
