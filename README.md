@@ -1,25 +1,24 @@
 # ProcessWatcher
-このgem `heroku logs -t` を実行していると(おそらく)heroku側の影響でたまに終了したり、何も出力しない、ということがあるのでそれらが起きた時に再実行するためのものです。
+* heroku logsを実行して適宜google driveにアップロードするコマンドです
 
 ## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'process_watcher'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install process_watcher
+`bundle install`
 
 ## Usage
+```
+$ git clone https://github.com/jiikko/process_watcher
+$ bin/process_watcher 'heroku logs -t --app hoge-app'
+```
 
-TODO: Write usage instructions here
+## TODO
+* tmp/pid を作成して二重起動しないようにする
+* launchdのplist作ってmacoxのserviceとして稼働できるようにする
+* 日付が変わるかわったら前日分が当時にアップロードされるだろう
+
+## 動作上のメモ
+* 日付に関係なく、常に同名logfileに書き出していて、別スレッドで常にgoogle driveに現在に日付へアップロードを行う
+  * アップロードが滞るとlogfileが3日間とかのログファイルが0..30くらい溜まってすべて同日にアップロードされる
+    * こうならないためにアップロードは常に成功しなければならない
 
 ## License
 

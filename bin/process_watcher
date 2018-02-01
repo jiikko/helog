@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
 
+require "bundler/setup"
+require "process_watcher"
+
 # TODO USAGE
 
-ProcessWatcher.run(heroku_app_name: ARGV[0], logfilename: ARGV[1])
+ProcessWatcher.run(cmd: ARGV[0], logfilename: ARGV[1])
