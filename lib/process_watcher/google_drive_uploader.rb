@@ -1,6 +1,7 @@
 require "google_drive"
 require 'date'
 
+# Loggerがrotateしたログファイルをgoogle driveにアップしていく
 module ProcessWatcher
   class GoogleDriveUploader
     LOG_ROOT_DIR = ENV['LOG_ROOT_DIR']
@@ -49,15 +50,15 @@ module ProcessWatcher
       end
       # MEMO ログファイルが1日に100個以上できるとページネーションしないといけない
       log_files = month_folder.files(q: "name contains '#{current_day}'")
-      max_num = log_files.map{ |x| x.title.split('.')[1].to_i }.max
-      month_folder.upload_from_file(@filename, "#{current_day}-#{last_number}.log")
-      remove(@filename)
+      max_num = log_files.map{ |x| x.title.split('.')[1].to_i }.max || 0
+      month_folder.upload_from_file(@filename, "#{current_day}-#{max_num}.log")
+      remove
     end
 
     private
 
     def remove
-      # FileUtils.rm_rf(@filename)
+      FileUtils.rm_rf(@filename)
     end
   end
 end

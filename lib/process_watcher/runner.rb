@@ -1,7 +1,6 @@
 require 'logger'
 require 'open3'
 require 'fileutils'
-require 'google_drive_uploader'
 
 module ProcessWatcher
   class Runner
@@ -62,19 +61,19 @@ module ProcessWatcher
     end
 
     def with_logging(&block)
-      per_size = 400 * 1024 * 1024 # 400 MB
-      logger = Logger.new(@logfilename, 100, per_size) # https://docs.ruby-lang.org/ja/latest/library/logger.html
+      # https://docs.ruby-lang.org/ja/latest/library/logger.html
+      logger = Logger.new(@logfilename, 100, LOGGER_ROTATE_SIZE)
       logger.formatter = proc { |severity, datetime, progname, msg| msg }
       yield(logger)
     ensure
       logger.close
     end
 
-    # Loggerがrotateしたログファイルをgoogle driveにアップしていく
+    # MEMO ディレクトリを監視してファイルが追加された時にアップロードする？
     def upload_to_google_drive
       loop do
         # 番号が大きい順に並び替える
-        filenames = Dir.glob("logs/heroku.log.*").sort_by { |filename| - filename.split('.')[-1].to_i } }
+        filenames = Dir.glob("logs/heroku.log.*").sort_by { |filename| - filename.split('.')[-1].to_i }
         filenames.each do |filename|
           GoogleDriveUploader.new(filename).run
         end
@@ -86,14 +85,16 @@ module ProcessWatcher
       logfile = File.open(@logfilename)
       t =
         Thread.start do
+          print 'start watch!'
           prev_time = Time.now
           loop do
+            sleep(4)
             if prev_time == logfile.mtime
               restart_cmd
               sleep(10) # 起動時はすぐにはログを書き込まないのでちょっと待つ
             end
-            sleep(4)
             prev_time = Time.now
+            print '.'
           end
         end
     end

@@ -5,15 +5,17 @@
 * `bundle install`
 * google api の認証トークンを作成してgv_config.json にセットする
   * https://github.com/gimite/google-drive-ruby/blob/master/doc/authorization.md
+  * `echo GoogleDrive::Session.from_config("config.json") | bin/console` やって`config.json`に認証情報を埋め込む
+    * このプロセスを動かすマシン毎に実行する必要がある
+    * 認証情報込の`json.config`をそのまま渡してもいいかも
 
 ## Usage
 ```
 $ git clone https://github.com/jiikko/process_watcher
-$  LOG_ROOT_DIR=app-log bin/process_watcher 'heroku logs -t --app hoge-app' logs/heroku.log
+$ LOG_ROOT_DIR=app-log bin/process_watcher 'heroku logs -t --app hoge-app' logs/heroku.log
 ```
 
 ## TODO
-* tmp/pid を作成して二重起動しないようにする
 * launchdのplist作ってmacoxのserviceとして稼働できるようにする
 * 日付が変わるかわったら前日分が当時にアップロードされるだろう
 * google drice
