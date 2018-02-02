@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+require "process_watcher"
+require "pry"
+
+
+@session = GoogleDrive::Session.from_config("gv_config.json")
+puts '---'
+puts 'welcome to google_drive_console!'
+puts 'I setted google drive session to @session '
+puts '---'
+
+Pry.start
