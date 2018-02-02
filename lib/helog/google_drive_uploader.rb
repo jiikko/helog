@@ -25,11 +25,11 @@ module Helog
 
     def initialize(filename)
       @filename = filename
+      @today = Date.today
     end
 
-    # TODO 接続情報はキャッシュしておく
     def run
-      # MEMO ログファイルが1日に100個以上できるとページネーションしないといけない
+      # ログファイルが1日に100個以上できるとページネーションしないといけない
       upload
       remove_log
     rescue => e
@@ -56,12 +56,8 @@ module Helog
     def log_files
       log_folder = session.folders_by_name(LOG_ROOT_DIR)
       if log_folder.nil?
-        log_folder = session.root_folder.create_subcollection(LOG_ROOT_DIR)
+        log_folder = session.create_subcollection(LOG_ROOT_DIR)
       end
-      google_drive = GoogleDrive.new
-      folder = google_drive.folder.find_or_create(LOG_ROOT_DIR)
-      get_folder(LOG_ROOT_DIR)
-
       year_folder = log_folder.subfolder_by_name(current_year)
       if year_folder.nil?
         year_folder = log_folder.create_subcollection(current_year)
@@ -82,19 +78,15 @@ module Helog
     end
 
     def current_year
-      current_year = today.strftime('%Y')
+      current_year = @today.strftime('%Y')
     end
 
     def current_month
-      current_month = today.strftime('%m')
+      current_month = @today.strftime('%m')
     end
 
     def current_day
-      current_day = today.strftime('%d')
-    end
-
-    def today
-      Date.today
+      current_day = @today.strftime('%d')
     end
   end
 end
