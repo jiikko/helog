@@ -2,7 +2,7 @@ require "google_drive"
 require 'date'
 
 # Loggerがrotateしたログファイルをgoogle driveにアップしていく
-module ProcessWatcher
+module Helog
   class GoogleDriveUploader
     LOG_ROOT_DIR = ENV['LOG_ROOT_DIR']
 

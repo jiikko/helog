@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+require "helog"
+
+# TODO USAGE
+
+Helog.run(cmd: ARGV[0], logfilename: ARGV[1])

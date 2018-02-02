@@ -1,10 +1,10 @@
 require "spec_helper"
 
-RSpec.describe ProcessWatcher::GoogleDriveUploader do
+RSpec.describe Helog::GoogleDriveUploader do
   describe '#max_num_of_files' do
     context 'ファイルがない時' do
       it 'return num of max' do
-        uploader = ProcessWatcher::GoogleDriveUploader.new(nil)
+        uploader = Helog::GoogleDriveUploader.new(nil)
         allow(uploader).to receive(:log_files) do
           []
         end
@@ -15,7 +15,7 @@ RSpec.describe ProcessWatcher::GoogleDriveUploader do
       it do
         struct = Struct.new(:title)
         file = struct.new('01-0.log')
-        uploader = ProcessWatcher::GoogleDriveUploader.new(nil)
+        uploader = Helog::GoogleDriveUploader.new(nil)
         allow(uploader).to receive(:log_files) do
           [ file,
           ]
@@ -27,7 +27,7 @@ RSpec.describe ProcessWatcher::GoogleDriveUploader do
       it do
         struct = Struct.new(:title)
         file = struct.new('01-5.log')
-        uploader = ProcessWatcher::GoogleDriveUploader.new(nil)
+        uploader = Helog::GoogleDriveUploader.new(nil)
         allow(uploader).to receive(:log_files) do
           [ file,
           ]

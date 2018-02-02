@@ -1,5 +1,5 @@
 require "bundler/setup"
-require "process_watcher"
+require "helog"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

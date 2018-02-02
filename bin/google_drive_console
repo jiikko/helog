@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require "bundler/setup"
-require "process_watcher"
+require "helog"
 require "pry"
 
 

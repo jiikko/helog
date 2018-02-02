@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe ProcessWatcher do
+RSpec.describe Helog do
   describe '監視対象のプロセスが何も書き込まなくなったら再起動する' do
   end
 

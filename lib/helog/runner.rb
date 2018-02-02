@@ -2,7 +2,7 @@ require 'logger'
 require 'open3'
 require 'fileutils'
 
-module ProcessWatcher
+module Helog
   class Runner
     PID_PATH = 'tmp/pid'
 
@@ -47,7 +47,7 @@ module ProcessWatcher
       @cmd_thread =
         Thread.start do
           loop do
-            with_logging do |logger|
+            logging_with do |logger|
               # https://docs.ruby-lang.org/ja/latest/method/Open3/m/popen3.html
               Open3.popen2(@cmd) do |_stdin, stdout, wait_thr|
                 while line = stdout.gets

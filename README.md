@@ -1,4 +1,4 @@
-# ProcessWatcher
+# Helog(heroku + log)
 * heroku logsを実行して適宜google driveにアップロードするコマンドです
 * 実行すると3つのThreadが動きます
   * heroku logsの出力をLoggerに書き込むThread
@@ -6,7 +6,7 @@
   * Loggerがrotateしたログをgoogle driveにアップロードするThreadの3つが動きます
 
 ## Installation
-* `bundle install` && `bin/setup_google_drive.rb`
+* `bundle install` && `bin/setup_google_drive`
   * google driveへのアクセス権限を取得する
 
 ### google api のトークンを発行する(インストールには不要なのでskip)
@@ -15,8 +15,8 @@
 
 ## Usage
 ```
-$ git clone https://github.com/jiikko/process_watcher
-$ LOG_ROOT_DIR=app-log bin/process_watcher 'heroku logs -t --app hoge-app' logs/heroku.log
+$ git clone https://github.com/jiikko/helog
+$ LOG_ROOT_DIR=app-log bin/helog 'heroku logs -t --app hoge-app' logs/heroku.log
 ```
 
 ## TODO
