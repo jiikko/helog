@@ -55,6 +55,7 @@ module ProcessWatcher
                 end
               end
               puts 'process exited. restart!'
+              sleep(3)
             end
           end
         end
@@ -69,11 +70,11 @@ module ProcessWatcher
       logger.close
     end
 
-    # MEMO ディレクトリを監視してファイルが追加された時にアップロードする？
+    # FIXME アップロード対象のファイルの検出はポーリングしているが、ディレクトリを監視してもいいかも. 性能がでないなら検討する
     def start_log_upload_thread
       loop do
-        # 番号が大きい順に並び替える
-        filenames = Dir.glob("logs/heroku.log.*").sort_by { |filename| - filename.split('.')[-1].to_i }
+        # 番号が大きい順に並び替える. 番号大きいログの方が古い
+        filenames = Dir.glob("#{@logfilename}.*").sort_by { |filename| - filename.split('.')[-1].to_i }
         filenames.each do |filename|
           GoogleDriveUploader.new(filename).run
         end
@@ -86,7 +87,6 @@ module ProcessWatcher
       t =
         Thread.start do
           puts 'start watch!'
-          prev_time = Time.now
           loop do
             sleep(4)
             if (Time.now - logfile.mtime) > 15
