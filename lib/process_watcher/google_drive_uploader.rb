@@ -50,7 +50,7 @@ module ProcessWatcher
       end
       # MEMO ログファイルが1日に100個以上できるとページネーションしないといけない
       log_files = month_folder.files(q: "name contains '#{current_day}'")
-      max_num = log_files.map{ |x| x.title.split('.')[1].to_i }.max || 0
+      max_num = log_files.map{ |x| %r!-(\d+)\.log! =~ x.title; $1 }.map(&:to_i).max || 0
       month_folder.upload_from_file(@filename, "#{current_day}-#{max_num}.log")
       remove
     end
