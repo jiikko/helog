@@ -2,12 +2,14 @@
 * heroku logsを実行して適宜google driveにアップロードするコマンドです
 
 ## Installation
-`bundle install`
+* `bundle install`
+* google api の認証トークンを作成してgv_config.json にセットする
+  * https://github.com/gimite/google-drive-ruby/blob/master/doc/authorization.md
 
 ## Usage
 ```
 $ git clone https://github.com/jiikko/process_watcher
-$ bin/process_watcher 'heroku logs -t --app hoge-app' logs/heroku.log
+$  LOG_ROOT_DIR=app-log bin/process_watcher 'heroku logs -t --app hoge-app' logs/heroku.log
 ```
 
 ## TODO
@@ -29,11 +31,13 @@ $ bin/process_watcher 'heroku logs -t --app hoge-app' logs/heroku.log
     * こうならないためにアップロードは常に成功しなければならない
 * google drive へのアップロードは、
   * drive上にある日付ディレクトリの最大添字+1にしたファイル名にして保存していく
-  * ログファイルにある数字の小さいファイルの添字からアップロードしていく
+  * ログファイルにある数字の大きいファイルの添字からアップロードしていく
   * アップロードを完了にするファイル名はそのままにしておいて、アップロードが完了したファイルにはnull文字を書き出す
 * ruby loggerは、ローテイトするごとにファイル名の添字をインクリメントする
   * ローテイトして分割ファイル数を超えると添字の大きいファイルから削除を行う
 * ログファイルが5個あってアップロードを2/5完了している時にプロセスをrestartしたら、null文字を書き込む前の2/5目を再び再アップロードする可能性がある
+* loggerが作るログファイルが大量にある時はアップロードに失敗していることを意味してる
+  * 正常にアップロードができていたらそのログファイルは最新のぶんのみになっているはず
 
 ## 保留的なメモ
 * 集計する時、ログフィアルが20個ぐらいあるはずでしかも随時ファイルがアップロードされていく状況。なので随時集計をしている場合必ずしも時系列になるとは限らない、したがって、リアルタイムにスプレットシートの最新業に書き足していくことはできない(よくわからなくなってきたので後で考える)

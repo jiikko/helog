@@ -1,11 +1,9 @@
 require 'logger'
 require 'open3'
 require 'fileutils'
+require 'google_drive_uploader'
 
 module ProcessWatcher
-  class GoogleDriveUploader
-  end
-
   class Runner
     PID_PATH = 'tmp/pid'
 
@@ -72,17 +70,13 @@ module ProcessWatcher
       logger.close
     end
 
+    # Loggerがrotateしたログファイルをgoogle driveにアップしていく
     def upload_to_google_drive
-      return
       loop do
-        Dir.blob("#{@logfilename}.*") do |filename|
-          begin
-            # 0開始なので
-            GoogleDriveUploader.new(filename).upload_with_rename
-            filename
-          rescue
-
-          end
+        # 番号が大きい順に並び替える
+        filenames = Dir.glob("logs/heroku.log.*").sort_by { |filename| - filename.split('.')[-1].to_i } }
+        filenames.each do |filename|
+          GoogleDriveUploader.new(filename).run
         end
         sleep(1)
       end
