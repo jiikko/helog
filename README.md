@@ -21,6 +21,7 @@ $ bin/process_watcher 'heroku logs -t --app hoge-app' logs/heroku.log
 * 動作確認
   * heroku logsが終了した時にrestartすること
   * ファイルへの書き込みをしなくなった時にrestartすること
+    * osをsleepから復帰したら止まった
 
 ## 動作上のメモ
 * 日付に関係なく、常に同名logfileに書き出していて、別スレッドで常にgoogle driveに現在に日付へアップロードを行う
