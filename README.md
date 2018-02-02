@@ -17,10 +17,7 @@ $ LOG_ROOT_DIR=app-log bin/process_watcher 'heroku logs -t --app hoge-app' logs/
 
 ## TODO
 * launchdのplist作ってmacoxのserviceとして稼働できるようにする
-* 日付が変わるかわったら前日分が当時にアップロードされるだろう
 * google drice
-  * 今日の日付のディレクトリにアップロードすること
-  * アップロードしたファイルの添字が最後+1になっていること
   * アップロードするファイルは圧縮する
 * 動作確認
   * heroku logsが終了した時にrestartすること
