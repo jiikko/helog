@@ -64,7 +64,7 @@ module ProcessWatcher
     end
 
     def with_logging(&block)
-      per_size = 50 * 1024 * 1024 # 50 MB
+      per_size = 100 * 1024 * 1024 # 100 MB
       logger = Logger.new(@logfilename, 100, per_size) # https://docs.ruby-lang.org/ja/latest/library/logger.html
       logger.formatter = proc { |severity, datetime, progname, msg| msg }
       yield(logger)
