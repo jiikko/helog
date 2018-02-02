@@ -29,7 +29,7 @@ module ProcessWatcher
 
     def restart_cmd
       @cmd_thread.kill
-      start_cmd
+      start_cmd_thread
     end
 
     private
