@@ -31,7 +31,6 @@ module Helog
     def run
       # ログファイルが1日に100個以上できるとページネーションしないといけない
       upload
-      remove_log
     rescue => e
       puts e.full_message
       sleep(5)
@@ -50,10 +49,16 @@ module Helog
     private
 
     def upload
-      month_folder.upload_from_file(@filename, "#{current_day}-#{max_num_of_files}.log")
+      Open3.popen2("gzip #{@filename}")
+      month_folder.upload_from_file("#{@filename}.gz", "#{current_day}-#{max_num_of_files}.log.gz")
+      FileUtils.rm_rf("#{@filename}.gz")
     end
 
     def log_files
+      month_folder.files(q: "name contains '#{current_day}'")
+    end
+
+    def month_folder
       log_folder = session.folders_by_name(LOG_ROOT_DIR)
       if log_folder.nil?
         log_folder = session.create_subcollection(LOG_ROOT_DIR)
@@ -66,11 +71,7 @@ module Helog
       if month_folder.nil?
         month_folder = year_folder.create_subcollection(current_month)
       end
-      month_folder.files(q: "name contains '#{current_day}'")
-    end
-
-    def remove_log
-      FileUtils.rm_rf(@filename)
+      month_folder
     end
 
     def session

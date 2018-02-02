@@ -30,6 +30,7 @@ $ LOG_ROOT_DIR=app-log bin/helog 'heroku logs -t --app hoge-app' logs/heroku.log
 ## 完了したTODO
 * google drive
   * アップロードするファイルは圧縮する
+  * DONE
 * アップロード中にファイル名が変更されると未アップロードなファイルを削除する可能性があるのでLoggerがストップしていて欲しい
   * Fiberを使ってLogginngスレッドを停止しておく？
   * https://docs.ruby-lang.org/ja/latest/class/Fiber.html
