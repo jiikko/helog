@@ -9,7 +9,7 @@ module ProcessWatcher
     # フォルダをゴミ箱に移動してもfolders_by_nameでヒットするので完全に削除しなければならない
     #
     # ログ・ファイルは下記レイアウトで保存をする
-    # root - ubiregi-server-log - 2016
+    # root - app-log - 2016
     #                          \- 2017
     #                          \- 2018
     #                                \--- 01
