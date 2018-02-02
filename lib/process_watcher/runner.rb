@@ -55,6 +55,7 @@ module ProcessWatcher
                   logger.info line
                 end
               end
+              puts 'process exited. restart!'
             end
           end
         end
@@ -89,7 +90,8 @@ module ProcessWatcher
           prev_time = Time.now
           loop do
             sleep(4)
-            if prev_time == logfile.mtime
+            if (Time.now - logfile.mtime) > 10
+              puts 'restart! from cmd_watcher'
               restart_cmd
               sleep(10) # 起動時はすぐにはログを書き込まないのでちょっと待つ
             end

@@ -19,10 +19,6 @@ $ LOG_ROOT_DIR=app-log bin/process_watcher 'heroku logs -t --app hoge-app' logs/
 * launchdのplist作ってmacoxのserviceとして稼働できるようにする
 * google drice
   * アップロードするファイルは圧縮する
-* 動作確認
-  * heroku logsが終了した時にrestartすること
-  * ファイルへの書き込みをしなくなった時にrestartすること
-    * osをsleepから復帰したら止まった
 * アップロード中にファイル名が変更されると未アップロードなファイルを削除する可能性があるのでLoggerがストップしていて欲しい
   * Fiberを使ってLogginngスレッドを停止しておく？
   * https://docs.ruby-lang.org/ja/latest/class/Fiber.html
@@ -37,7 +33,6 @@ $ LOG_ROOT_DIR=app-log bin/process_watcher 'heroku logs -t --app hoge-app' logs/
   * アップロードを完了にするファイル名はそのままにしておいて、アップロードが完了したファイルにはnull文字を書き出す
 * ruby loggerは、ローテイトするごとにファイル名の添字をインクリメントする
   * ローテイトして分割ファイル数を超えると添字の大きいファイルから削除を行う
-* ログファイルが5個あってアップロードを2/5完了している時にプロセスをrestartしたら、null文字を書き込む前の2/5目を再び再アップロードする可能性がある
 * loggerが作るログファイルが大量にある時はアップロードに失敗していることを意味してる
   * 正常にアップロードができていたらそのログファイルは最新のぶんのみになっているはず
 
@@ -45,6 +40,13 @@ $ LOG_ROOT_DIR=app-log bin/process_watcher 'heroku logs -t --app hoge-app' logs/
 * 集計する時、ログフィアルが20個ぐらいあるはずでしかも随時ファイルがアップロードされていく状況。なので随時集計をしている場合必ずしも時系列になるとは限らない、したがって、リアルタイムにスプレットシートの最新業に書き足していくことはできない(よくわからなくなってきたので後で考える)
   * google driveにアップロードしたらgoogle のなんかで集計する?
   * シートへ時系列に集計するには、集計結果のJSONを書き出しておいてすべて並び替えておき、1シートずつ並列でアップロードをしていく
+
+* 動作確認
+  * heroku logsが終了した時にrestartすること
+    * `ENOTFOUND: getaddrinfo ENOTFOUND api.heroku.com api.heroku.com:443`という出力がでてきてサイドプロセスが実行された
+  * ファイルへの書き込みをしなくなった時にrestartすること
+    * ファイルの書き込みが止まるとコマンドを再起動したのを確認
+       * `restart! from cmd_watcher`と出た
 
 ## License
 

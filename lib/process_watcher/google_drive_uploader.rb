@@ -53,6 +53,10 @@ module ProcessWatcher
       max_num = (log_files.map{ |x| %r!-(\d+)\.log! =~ x.title; $1 }.map(&:to_i).max + 1) || 0
       month_folder.upload_from_file(@filename, "#{current_day}-#{max_num}.log")
       remove
+    rescue => e
+      puts e.full_message
+      sleep(5)
+      retry
     end
 
     private
