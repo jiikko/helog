@@ -14,7 +14,13 @@ $ bin/process_watcher 'heroku logs -t --app hoge-app' logs/heroku.log
 * tmp/pid を作成して二重起動しないようにする
 * launchdのplist作ってmacoxのserviceとして稼働できるようにする
 * 日付が変わるかわったら前日分が当時にアップロードされるだろう
-* google drice へ送信する時は圧縮する
+* google drice
+  * 今日の日付のディレクトリにアップロードすること
+  * アップロードしたファイルの添字が最後+1になっていること
+  * アップロードするファイルは圧縮する
+* 動作確認
+  * heroku logsが終了した時にrestartすること
+  * ファイルへの書き込みをしなくなった時にrestartすること
 
 ## 動作上のメモ
 * 日付に関係なく、常に同名logfileに書き出していて、別スレッドで常にgoogle driveに現在に日付へアップロードを行う
