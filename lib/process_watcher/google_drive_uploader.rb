@@ -29,7 +29,7 @@ module ProcessWatcher
 
     # TODO 接続情報はキャッシュしておく
     def run
-      session = GoogleDrive::Session.from_config("config.json")
+      session = GoogleDrive::Session.from_config("gv_config.json")
       log_folder = session.folders_by_name(LOG_ROOT_DIR)
       if log_folder.nil?
         log_folder = session.root_folder.create_subcollection(LOG_ROOT_DIR)
