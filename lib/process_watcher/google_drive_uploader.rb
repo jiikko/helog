@@ -29,16 +29,38 @@ module ProcessWatcher
 
     # TODO 接続情報はキャッシュしておく
     def run
-      session = GoogleDrive::Session.from_config("gv_config.json")
+      # MEMO ログファイルが1日に100個以上できるとページネーションしないといけない
+      upload
+      remove_log
+    rescue => e
+      puts e.full_message
+      sleep(5)
+      retry
+    end
+
+    def max_num_of_files
+      max = (log_files.map{ |x| %r!-(\d+)\.log! =~ x.title; $1 }.map(&:to_i).max)
+      if max.nil?
+        0
+      else
+        max + 1
+      end
+    end
+
+    private
+
+    def upload
+      month_folder.upload_from_file(@filename, "#{current_day}-#{max_num_of_files}.log")
+    end
+
+    def log_files
       log_folder = session.folders_by_name(LOG_ROOT_DIR)
       if log_folder.nil?
         log_folder = session.root_folder.create_subcollection(LOG_ROOT_DIR)
       end
-
-      today = Date.today
-      current_year = today.strftime('%Y')
-      current_month = today.strftime('%m')
-      current_day = today.strftime('%d')
+      google_drive = GoogleDrive.new
+      folder = google_drive.folder.find_or_create(LOG_ROOT_DIR)
+      get_folder(LOG_ROOT_DIR)
 
       year_folder = log_folder.subfolder_by_name(current_year)
       if year_folder.nil?
@@ -48,21 +70,31 @@ module ProcessWatcher
       if month_folder.nil?
         month_folder = year_folder.create_subcollection(current_month)
       end
-      # MEMO ログファイルが1日に100個以上できるとページネーションしないといけない
-      log_files = month_folder.files(q: "name contains '#{current_day}'")
-      max_num = (log_files.map{ |x| %r!-(\d+)\.log! =~ x.title; $1 }.map(&:to_i).max + 1) || 0
-      month_folder.upload_from_file(@filename, "#{current_day}-#{max_num}.log")
-      remove
-    rescue => e
-      puts e.full_message
-      sleep(5)
-      retry
+      month_folder.files(q: "name contains '#{current_day}'")
     end
 
-    private
-
-    def remove
+    def remove_log
       FileUtils.rm_rf(@filename)
+    end
+
+    def session
+      @session ||= GoogleDrive::Session.from_config("gv_config.json")
+    end
+
+    def current_year
+      current_year = today.strftime('%Y')
+    end
+
+    def current_month
+      current_month = today.strftime('%m')
+    end
+
+    def current_day
+      current_day = today.strftime('%d')
+    end
+
+    def today
+      Date.today
     end
   end
 end
