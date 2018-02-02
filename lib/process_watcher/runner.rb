@@ -86,17 +86,15 @@ module ProcessWatcher
       logfile = File.open(@logfilename)
       t =
         Thread.start do
-          print 'start watch!'
+          puts 'start watch!'
           prev_time = Time.now
           loop do
             sleep(4)
-            if (Time.now - logfile.mtime) > 10
+            if (Time.now - logfile.mtime) > 15
               puts 'restart! from cmd_watcher'
               restart_cmd
               sleep(10) # 起動時はすぐにはログを書き込まないのでちょっと待つ
             end
-            prev_time = Time.now
-            print '.'
           end
         end
     end
