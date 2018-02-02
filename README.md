@@ -26,6 +26,9 @@ $ LOG_ROOT_DIR=app-log bin/process_watcher 'heroku logs -t --app hoge-app' logs/
   * heroku logsが終了した時にrestartすること
   * ファイルへの書き込みをしなくなった時にrestartすること
     * osをsleepから復帰したら止まった
+* アップロード中にファイル名が変更されると未アップロードなファイルを削除する可能性があるのでLoggerがストップしていて欲しい
+  * Fiberを使ってLogginngスレッドを停止しておく？
+  * https://docs.ruby-lang.org/ja/latest/class/Fiber.html
 
 ## 動作上のメモ
 * 日付に関係なく、常に同名logfileに書き出していて、別スレッドで常にgoogle driveに現在に日付へアップロードを行う
