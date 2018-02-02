@@ -24,6 +24,8 @@ $ LOG_ROOT_DIR=app-log bin/process_watcher 'heroku logs -t --app hoge-app' logs/
 * 取り込んだログファイルをpapertrailのように検索できるWEBアプリを作る
 * Linuxサーバ上で稼働できるようにする
   * heroku logsコマンドを実行できる必要があって認証をどうする?
+* heroku log drainでログを受け取ってgoogle driveにアップロードしたい
+  * 受取手のサーバは heroku のhobby でも動きそうだけどログの量が多いのでリクエストがつまりそう(やっていない)
 
 ## 完了したTODO
 * google drive
