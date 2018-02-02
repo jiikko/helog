@@ -18,12 +18,11 @@ module ProcessWatcher
     end
 
     def run
-      # プロセスを停止したタイミングによってファイルが上書きされるタイミングはないか？
       write_pid_file
-      start_cmd
-      start_cmd_watcher
-      upload_to_google_drive
-      loop { sleep(1) }
+      start_cmd_thread
+      start_cmd_watch_thread
+      start_log_upload_thread
+      loop { sleep(10) }
     ensure
       FileUtils.rm_rf(PID_PATH)
     end
@@ -44,7 +43,7 @@ module ProcessWatcher
       end
     end
 
-    def start_cmd
+    def start_cmd_thread
       @cmd_thread =
         Thread.start do
           loop do
@@ -61,7 +60,7 @@ module ProcessWatcher
         end
     end
 
-    def with_logging(&block)
+    def logging_with(&block)
       # https://docs.ruby-lang.org/ja/latest/library/logger.html
       logger = Logger.new(@logfilename, 100, LOGGER_ROTATE_SIZE)
       logger.formatter = proc { |severity, datetime, progname, msg| msg }
@@ -71,7 +70,7 @@ module ProcessWatcher
     end
 
     # MEMO ディレクトリを監視してファイルが追加された時にアップロードする？
-    def upload_to_google_drive
+    def start_log_upload_thread
       loop do
         # 番号が大きい順に並び替える
         filenames = Dir.glob("logs/heroku.log.*").sort_by { |filename| - filename.split('.')[-1].to_i }
@@ -82,7 +81,7 @@ module ProcessWatcher
       end
     end
 
-    def start_cmd_watcher
+    def start_cmd_watch_thread
       logfile = File.open(@logfilename)
       t =
         Thread.start do
