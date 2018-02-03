@@ -19,6 +19,7 @@ module Helog
 
       valid_dates = @dates.map { |d| Date.parse(d).strftime('%Y-%m-%d') }
       puts @dates
+      return true
     end
 
     def dates
