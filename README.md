@@ -6,10 +6,10 @@
   * Loggerがrotateしたログをgoogle driveにアップロードするThreadの3つが動きます
 
 ## Installation
-* `bundle install` && `bin/setup_google_drive`
+* `bundle install` && `cp gv_config.sample.json gv_config.json` && `bin/setup_google_drive`
   * google driveへのアクセス権限を取得する
 
-### google api のトークンを発行する(インストールには不要なのでskip)
+### google api のトークンを発行する(初回のみ)
 * 下記を参照しトークンを作成してgv_config.json にセットする
   * https://github.com/gimite/google-drive-ruby/blob/master/doc/authorization.md
 
