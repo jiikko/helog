@@ -2,29 +2,35 @@ require 'date'
 
 module Helog
   class Fetcher
-    attr_accessor :dates
+    attr_accessor :dates_to_s
     def initialize(dates: )
-      self.dates = dates
+      self.dates_to_s = dates
     end
 
     def run
-      if @dates.empty?
+      if dates_to_s.empty?
         puts('empty argv!!')
         return false
       end
-      if @dates.size > 2
+      if dates_to_s.size > 2
         puts('too many argv!!')
         return false
       end
 
-      valid_dates = @dates.map { |d| Date.parse(d).strftime('%Y-%m-%d') }
-      puts @dates
+      dates.each do |date|
+        fetch(date)
+      end
       return true
     end
 
     def dates
+      valid_dates = dates_to_s.map { |d| Date.parse(d) }
+      (valid_dates.first..valid_dates.last).to_a
     end
 
     private
+
+    def fetch(date)
+    end
   end
 end

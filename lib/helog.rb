@@ -11,7 +11,6 @@ module Helog
   end
 
   def self.fetch(dates: )
-    require "helog/fetcher"
     Fetcher.new(dates: dates).run
   end
 end
