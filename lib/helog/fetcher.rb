@@ -20,9 +20,13 @@ module Helog
         return false
       end
 
-      dates.each do |date|
-        fetch(date)
-      end
+      result =
+        dates.map { |date|
+          fetch(date)
+        }.join(' ')
+      puts 'success command!'
+      puts
+      puts "zgrep YOUR_WORD #{result}"
       return true
     end
 
@@ -36,7 +40,7 @@ module Helog
     def fetch(date)
       base_path = "app_log/#{date.strftime('%Y/%m')}"
       FileUtils.mkdir_p(base_path)
-      Parallel.each(files(date), in_threads: 5) do |file|
+      Parallel.map(files(date), in_threads: 8) do |file|
         path = "#{base_path}/#{file.title}"
         if File.exists?(path)
           puts "skip #{path}"
@@ -45,6 +49,7 @@ module Helog
           Retryable.retryable(tries: 3) { file.download_to_file(path) }
           puts "ok #{path}"
         end
+        path
       end
     end
 
