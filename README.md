@@ -20,7 +20,6 @@ $ LOG_ROOT_DIR=app-log bin/helog 'heroku logs -t --app hoge-app' logs/heroku.log
 ```
 
 ## TODO
-* 指定した日時のログをダウンロードしてくるコマンドを作る
 * 取り込んだログファイルをpapertrailのように検索できるWEBアプリを作る
 * Linuxサーバ上で稼働できるようにする
   * heroku logsコマンドを実行できる必要があって認証をどうする?
@@ -42,6 +41,9 @@ $ LOG_ROOT_DIR=app-log bin/helog 'heroku logs -t --app hoge-app' logs/heroku.log
   * ファイルへの書き込みをしなくなった時にrestartすること
     * ファイルの書き込みが止まるとコマンドを再起動したのを確認
        * `restart! from cmd_watcher`と出た
+* 指定した日時のログをダウンロードしてくるコマンドを作る
+  * fetchというコマンドを作成した
+  * DONE
 
 ## 動作上のメモ
 * 日付に関係なく、常に同名logfileに書き出していて、別スレッドで常にgoogle driveに現在に日付へアップロードを行う

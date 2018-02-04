@@ -1,4 +1,5 @@
 require "spec_helper"
+require "parallel"
 
 RSpec.describe Helog::Fetcher do
   describe '#run' do

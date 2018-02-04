@@ -24,9 +24,9 @@ module Helog
     end
 
     def month_folder
-      log_folder = session.folders_by_name(LOG_ROOT_DIR)
+      log_folder = session.folders_by_name(Helog::LOG_ROOT_DIR)
       if log_folder.nil?
-        log_folder = session.create_subcollection(LOG_ROOT_DIR)
+        log_folder = session.create_subcollection(Helog::LOG_ROOT_DIR)
       end
       year_folder = log_folder.subfolder_by_name(current_year)
       if year_folder.nil?

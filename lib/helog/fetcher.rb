@@ -1,4 +1,5 @@
 require 'date'
+require 'retryable'
 
 module Helog
   class Fetcher
@@ -33,11 +34,25 @@ module Helog
     private
 
     def fetch(date)
-      date_to_s = date.strftime('%Y/%m/5d')
-      root_holder.find_by("date_to_s").download_method
+      base_path = "app_log/#{date.strftime('%Y/%m')}"
+      FileUtils.mkdir_p(base_path)
+      Parallel.each(files(date), in_threads: 5) do |file|
+        path = "#{base_path}/#{file.title}"
+        if File.exists?(path)
+          puts "skip #{path}"
+        else
+          # Google::Apis::ClientError
+          Retryable.retryable(tries: 3) { file.download_to_file(path) }
+          puts "ok #{path}"
+        end
+      end
     end
 
-    def session
+    def files(date)
+      log_folder = session.folders_by_name(Helog::LOG_ROOT_DIR) || (return [])
+      year_folder = log_folder.subfolder_by_name(date.strftime('%Y')) || (return [])
+      folder = year_folder.subfolder_by_name(date.strftime('%m')) || (return [])
+      folder.files(q: "name contains '#{date.strftime('%d')}'")
     end
   end
 end

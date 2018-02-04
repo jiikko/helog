@@ -3,10 +3,10 @@ require 'date'
 
 # Loggerがrotateしたログファイルをgoogle driveにアップしていく
 module Helog
+  LOG_ROOT_DIR = ENV['LOG_ROOT_DIR'] || 'app_log'
+
   class GoogleDriveUploader
     include Helog::GoogleDriveMixin
-
-    LOG_ROOT_DIR = ENV['LOG_ROOT_DIR']
 
     def initialize(filename)
       @filename = filename
