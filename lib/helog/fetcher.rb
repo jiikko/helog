@@ -31,6 +31,8 @@ module Helog
     private
 
     def fetch(date)
+      date_to_s = date.strftime('%Y/%m/5d')
+      root_holder.find_by("date_to_s").download_method
     end
   end
 end
