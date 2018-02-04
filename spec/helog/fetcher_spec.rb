@@ -43,4 +43,8 @@ RSpec.describe Helog::Fetcher do
       expect(subject).to eq([])
     end
   end
+
+  describe '#fetch' do
+    # TODO
+  end
 end
