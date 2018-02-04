@@ -2,6 +2,8 @@ require 'date'
 
 module Helog
   class Fetcher
+    include Helog::GoogleDriveMixin
+
     attr_accessor :dates_to_s
     def initialize(dates: )
       self.dates_to_s = dates
@@ -31,6 +33,9 @@ module Helog
     private
 
     def fetch(date)
+    end
+
+    def session
     end
   end
 end

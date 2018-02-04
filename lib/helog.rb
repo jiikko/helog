@@ -1,5 +1,6 @@
 require "helog/version"
 require "helog/runner"
+require 'helog/google_drive_mixin'
 require 'helog/fetcher'
 require 'helog/google_drive_uploader'
 
