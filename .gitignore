@@ -12,3 +12,4 @@
 .rspec_status
 gv_config.json
 log*
+app_log

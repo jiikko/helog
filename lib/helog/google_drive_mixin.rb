@@ -38,17 +38,5 @@ module Helog
       end
       month_folder
     end
-
-    def current_year
-      current_year = @current_date.strftime('%Y')
-    end
-
-    def current_month
-      current_month = @current_date.strftime('%m')
-    end
-
-    def current_day
-      current_day = @current_date.strftime('%d')
-    end
   end
 end

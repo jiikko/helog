@@ -42,5 +42,17 @@ module Helog
     def log_files
       month_folder.files(q: "name contains '#{current_day}'")
     end
+
+    def current_year
+      current_year = @current_date.strftime('%Y')
+    end
+
+    def current_month
+      current_month = @current_date.strftime('%m')
+    end
+
+    def current_day
+      current_day = @current_date.strftime('%d')
+    end
   end
 end
