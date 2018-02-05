@@ -35,7 +35,7 @@ module Helog
 
     def upload
       # retry するとgzip済みで元ファイルが消えているため存在確認をする
-      Open3.popen2("gzip #{@filename}") if File.exists(@filename)
+      Open3.popen2("gzip #{@filename}") if File.exists?(@filename)
       month_folder.upload_from_file("#{@filename}.gz", "#{current_day}-#{max_num_of_files}.log.gz")
       FileUtils.rm_rf("#{@filename}.gz")
     end
