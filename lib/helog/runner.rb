@@ -83,13 +83,13 @@ module Helog
     end
 
     def start_cmd_watch_thread
-      logfile = File.open(@logfilename)
       t =
         Thread.start do
           puts 'start watch!'
           loop do
+            logfile = File.open(@logfilename)
             sleep(4)
-            if (Time.now - logfile.mtime) > 15
+            if (Time.now - logfile.mtime) > 20
               puts 'restart! from cmd_watcher'
               restart_cmd
               sleep(10) # 起動時はすぐにはログを書き込まないのでちょっと待つ
