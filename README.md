@@ -25,6 +25,7 @@ $ LOG_ROOT_DIR=app-log bin/helog 'heroku logs -t --app hoge-app' logs/heroku.log
   * heroku logsコマンドを実行できる必要があって認証をどうする?
 * heroku log drainでログを受け取ってgoogle driveにアップロードしたい
   * 受取手のサーバは heroku のhobby でも動きそうだけどログの量が多いのでリクエストがつまりそう(やっていない)
+* どこかで継続してエラーがおきたらslackに通知する
 
 ## 完了したTODO
 * google drive
