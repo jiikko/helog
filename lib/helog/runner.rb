@@ -19,12 +19,14 @@ module Helog
 
     def run
       write_pid_file
-      start_cmd_thread
-      start_cmd_watch_thread
-      start_log_upload_thread
-      loop { sleep(10) }
-    ensure
-      FileUtils.rm_rf(PID_PATH)
+      begin
+        start_cmd_thread
+        start_cmd_watch_thread
+        start_log_upload_thread
+        loop { sleep(10) }
+      ensure
+        FileUtils.rm_rf(PID_PATH)
+      end
     end
 
     def restart_cmd
