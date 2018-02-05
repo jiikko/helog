@@ -24,7 +24,7 @@ module Helog
         dates.map { |date|
           fetch(date)
         }.join(' ')
-      puts 'success command!'
+      puts 'command was success!'
       puts
       puts "zgrep YOUR_WORD #{result}"
       return true
