@@ -22,3 +22,7 @@ bundle exec cap helog start
 
 ## macOS起動時にVMを起動する方法
 TODO
+
+## メモ
+* VMはホストオンリーアダプタで起動し、macOSのホスト名で名前解決してアクセスする
+  * VMにいれるミドルウェアを減らせるから
