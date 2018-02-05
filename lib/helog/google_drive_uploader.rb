@@ -55,5 +55,21 @@ module Helog
     def current_day
       current_day = @current_date.strftime('%d')
     end
+
+    def month_folder
+      log_folder = session.folders_by_name(Helog::LOG_ROOT_DIR)
+      if log_folder.nil?
+        log_folder = session.create_subcollection(Helog::LOG_ROOT_DIR)
+      end
+      year_folder = log_folder.subfolder_by_name(current_year)
+      if year_folder.nil?
+        year_folder = log_folder.create_subcollection(current_year)
+      end
+      month_folder = year_folder.subfolder_by_name(current_month)
+      if month_folder.nil?
+        month_folder = year_folder.create_subcollection(current_month)
+      end
+      month_folder
+    end
   end
 end
