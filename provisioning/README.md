@@ -12,10 +12,11 @@ vagrant up
 
 #### heroku へのログイン
 ```
-bundle exec cap helog login heroku
+vagrant ssh
+heroku login
 ```
 
-## 起動
+## ログ起動
 ```
 bundle exec cap helog start
 ```
