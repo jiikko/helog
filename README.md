@@ -2,7 +2,7 @@
 * heroku logsを実行して適宜google driveにアップロードするコマンドです
 * 実行すると3つのThreadが動きます
   * heroku logsの出力をLoggerに書き込むThread
-  * heroku logsコマンドの書き込みが停止しているとコマンドを再起動するThread
+  * heroku logsコマンドの書き込みが停止しているとそのThreadを再起動するThread
   * Loggerがrotateしたログをgoogle driveにアップロードするThreadの3つが動きます
 
 ## Installation
