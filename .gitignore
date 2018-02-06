@@ -13,3 +13,4 @@
 gv_config.json
 log*
 app_log
+provisioning/.vagrant/

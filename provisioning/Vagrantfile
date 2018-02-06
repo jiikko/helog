@@ -12,14 +12,14 @@ Vagrant.configure("2") do |config|
 
   # config.vm.provision "docker"
   # config.vm.provision :docker_compose
-  # config.vm.provision "shell", inline: <<-SHELL
-  #    apt-get update
-  #    apt-get install -y ruby-dev lv zsh vim build-essential bison
-  # SHELL
   config.vm.provision "shell", inline: <<-SHELL
-    su - vagrant -c 'command curl -sSL https://rvm.io/mpapis.asc | gpg --import -'
-    su - vagrant -c 'command curl -sSL https://get.rvm.io | bash -s stable'
-    su - vagrant -c 'rvm install 2.5.0'
+apt-get update
+apt-get install -y lv zsh vim curl git
+  SHELL
+  config.vm.provision "shell", inline: <<-SHELL
+su - vagrant -c 'command curl -sSL https://rvm.io/mpapis.asc | gpg --import -'
+su - vagrant -c 'command curl -sSL https://get.rvm.io | bash -s stable'
+su - vagrant -c 'rvm install 2.5.0 --default && gem i bundler'
   SHELL
   script = <<-SHELL
 sudo apt-get install -y python python-pip python-virtualenv
