@@ -10,7 +10,6 @@ module Helog
 
     def initialize(filename)
       @filename = filename
-      @current_date = Date.today
     end
 
     def run
@@ -45,15 +44,15 @@ module Helog
     end
 
     def current_year
-      current_year = @current_date.strftime('%Y')
+      Date.today.strftime('%Y')
     end
 
     def current_month
-      current_month = @current_date.strftime('%m')
+      Date.today.strftime('%m')
     end
 
     def current_day
-      current_day = @current_date.strftime('%d')
+      Date.today.strftime('%d')
     end
 
     def month_folder
