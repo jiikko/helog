@@ -5,4 +5,6 @@ require "helog"
 
 # TODO USAGE
 
+# 初期設定を行わないとupload時にエラーになるので実行時にチェックしておく
+GoogleDrive::Session.from_config("gv_config.json")
 Helog.run(cmd: ARGV[0], logfilename: ARGV[1])
