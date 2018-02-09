@@ -44,15 +44,15 @@ module Helog
     end
 
     def current_year
-      Date.today.strftime('%Y')
+      -> { Date.today.strftime('%Y') }.call
     end
 
     def current_month
-      Date.today.strftime('%m')
+      -> { Date.today.strftime('%m') }.call
     end
 
     def current_day
-      Date.today.strftime('%d')
+      -> { Date.today.strftime('%d') }.call
     end
 
     def month_folder
