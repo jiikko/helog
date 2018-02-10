@@ -45,7 +45,8 @@ module Helog
         if File.exists?(path)
           puts "skip #{path}"
         else
-          # Google::Apis::ClientError
+          puts "found #{path}"
+          # for Google::Apis::ClientError
           Retryable.retryable(tries: 3) { file.download_to_file(path) }
           puts "ok #{path}"
         end
