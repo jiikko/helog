@@ -57,7 +57,7 @@ module Helog
       log_folder = session.folders_by_name(Helog::LOG_ROOT_DIR) || (return [])
       year_folder = log_folder.subfolder_by_name(date.strftime('%Y')) || (return [])
       folder = year_folder.subfolder_by_name(date.strftime('%m')) || (return [])
-      folder.files(q: "name contains '#{date.strftime('%d')}'")
+      folder.files(q: "name contains '^#{date.strftime('%d')}'")
     end
   end
 end

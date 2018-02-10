@@ -41,7 +41,7 @@ module Helog
     end
 
     def log_files
-      month_folder.files(q: "name contains '#{current_day}'")
+      month_folder.files(q: "name contains '^#{current_day}'")
     end
 
     def current_year
