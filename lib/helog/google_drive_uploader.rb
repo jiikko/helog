@@ -4,6 +4,7 @@ require 'date'
 # Loggerがrotateしたログファイルをgoogle driveにアップしていく
 module Helog
   LOG_ROOT_DIR = ENV['LOG_ROOT_DIR'] || 'app_log'
+  ENV['TZ'] = 'Asia/Tokyo'
 
   class GoogleDriveUploader
     include Helog::GoogleDriveMixin
@@ -44,15 +45,15 @@ module Helog
     end
 
     def current_year
-      -> { Date.today.strftime('%Y') }.call
+      Time.now.strftime('%Y')
     end
 
     def current_month
-      -> { Date.today.strftime('%m') }.call
+      Time.now.strftime('%m')
     end
 
     def current_day
-      -> { Date.today.strftime('%d') }.call
+      Time.now.strftime('%d')
     end
 
     def month_folder
