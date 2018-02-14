@@ -19,6 +19,7 @@ module Helog
         puts('too many argv!!')
         return false
       end
+      puts 'starting fetch...'
 
       result =
         dates.map { |date|
