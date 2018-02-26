@@ -53,7 +53,9 @@ module Helog
               # https://docs.ruby-lang.org/ja/latest/method/Open3/m/popen3.html
               Open3.popen2(@cmd) do |_stdin, stdout, wait_thr|
                 while line = stdout.gets
-                  logger.info line
+                  Thead.handle_interrupt(RuntimeError => :never) do
+                    logger.info line
+                  end
                 end
               end
               puts 'process exited. restart!'
