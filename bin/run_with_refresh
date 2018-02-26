@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+# TODO ここに時間経ったらkillしてgit pull && runコマンドを再実行するコードを書く
