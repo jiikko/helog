@@ -1,6 +1,7 @@
 require 'logger'
 require 'open3'
 require 'fileutils'
+require 'thread'
 
 module Helog
   class Runner
