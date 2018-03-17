@@ -21,14 +21,19 @@ module Helog
       end
       puts 'starting fetch...'
 
-      result =
-        dates.map { |date|
-          fetch(date)
-        }.join(' ')
+      result = dates.map { |date| fetch(date) }.flatten
       puts 'command was success!'
       puts
-      puts "zgrep YOUR_WORD #{result}"
+      puts "zgrep YOUR_WORD #{sort_by(result).join(' ')}"
       return true
+    end
+
+    def sort_by(paths)
+      table =
+        {}.tap do |h|
+          paths.map { |path|  %r!(\d{4}/\d\d/\d\d)-(\d+)\.log\.gz! =~ path; h["#{$1}-#{$2}"] = path }
+        end
+      table.sort.map(&:last)
     end
 
     def dates

@@ -47,4 +47,25 @@ RSpec.describe Helog::Fetcher do
   describe '#fetch' do
     # TODO
   end
+
+  describe 'sort_by_path' do
+    it '並び替えること' do
+      paths = [ 'app_log/2018/02/10-2.log.gz',
+                'app_log/2018/02/10-0.log.gz',
+                'app_log/2018/02/12-9.log.gz',
+                'app_log/2018/02/10-1.log.gz',
+                'app_log/2018/02/10-8.log.gz',
+                'app_log/2018/02/12-0.log.gz',
+      ]
+      expected = [
+        'app_log/2018/02/10-0.log.gz',
+        'app_log/2018/02/10-1.log.gz',
+        'app_log/2018/02/10-2.log.gz',
+        'app_log/2018/02/10-8.log.gz',
+        'app_log/2018/02/12-0.log.gz',
+        'app_log/2018/02/12-9.log.gz',
+      ]
+      expect(expected).to eq(Helog::Fetcher.new(dates: []).sort_by(paths))
+    end
+  end
 end
