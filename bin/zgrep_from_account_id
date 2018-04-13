@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+
+# README:
+#   account_idと検索対象のファイルを引数に渡すとそのアカウントのログ収集することができるコマンドです
+#
+#   zgrep_from_account_id '\[account_id:xxxxx\]' app_log/2018/04/13-8.log.gz
+#     を実行すると
+#   zgrep '\[account_id:xxxxx\]' app_log/2018/04/13-8.log.gz を実行し、
+#     下記のような1行がヒットするので得られた request_id でもう一度zgrepします
+#       2018-04-13T06:30:42.841529+00:00 app[web.7]: [0472b961-3535-49d8-9f65-f6d6460ddcfc] [account_id:xxxx]
+#   zgrep '\[xxxxx-xxxxx-xxxxx-xxxxx\]' app_log/2018/04/13-8.log.gz
+#   これを1つのrequest_idごとに実行します
+#
+# Usage:
+#   zgrep_from_account_id '\[account_id:xxxxx\]' app_log/2018/04/13-8.log.gz
+
+require 'open3'
+
+search_word = ARGV[0]
+path = ARGV[1]
+
+Open3.popen2("zgrep '#{search_word}' #{path}") do |_stdin, stdout, wait_thr|
+  puts "executing... zgrep #{search_word} #{path}'"
+  while line = stdout.gets
+    if %r!(\[[-\w]+?\]) \[account_id:! =~ line
+      uuid = $1
+      cmd = ("zgrep '#{uuid}' #{path}").sub(']', '\]').sub('[', '\[')
+      puts cmd
+      Open3.popen2(cmd) do |_stdin, stdout, wait_thr|
+        while line = stdout.gets
+          puts line
+        end
+      end
+      puts 
+    else
+      puts 'uuidの取得に失敗しました。なにかおかしいです'
+      puts "-> #{line}"
+    end
+  end
+end
