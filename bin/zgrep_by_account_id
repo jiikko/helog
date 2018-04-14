@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+# README:
+#   account_idと検索対象のファイルを引数に渡すとそのアカウントのログ収集するコマンドです
+#
+# Usage:
+#   zgrep_by_account_id '3333' app_log/2018/04/13-8.log.gz
+
+require "bundler/setup"
+require 'helog/grep/by_account_id'
+
+accout_id = ARGV[0]
+path = ARGV[1]
+
+Helog::Grep::ByAccountId.new(accout_id: accout_id, path: path)
