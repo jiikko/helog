@@ -19,7 +19,7 @@ module Helog
 
       def run
         cmd = "zgrep '\\\[account_id:#{@accout_id}\\\]' #{@path}"
-        lines_of_account_id = []
+        uuids = []
         Open3.popen2(cmd) do |_stdin, stdout, wait_thr|
           puts "Executing... #{cmd}"
           while line = stdout.gets
@@ -28,17 +28,19 @@ module Helog
               puts 'uuidの取得に失敗しました。なにかおかしいです'
               puts "-> #{line}"
             end
-            lines_of_account_id << "-e '#{$1}'"
+            uuids << "-e '#{$1}'"
           end
         end
-        cmd = ("zgrep #{lines_of_account_id.join(' ')} #{@path}").gsub(']', '\]').gsub('[', '\[')
-        puts cmd
-        Open3.popen2(cmd) do |_stdin, stdout, wait_thr|
-          while line = stdout.gets
-            puts line
+        uuids.each_slice(20) do |part_uuids|
+          cmd = ("zgrep #{part_uuids.join(' ')} #{@path}").gsub(']', '\]').gsub('[', '\[')
+          puts cmd
+          Open3.popen2(cmd) do |_stdin, stdout, wait_thr|
+            while line = stdout.gets
+              puts line
+            end
           end
+          puts
         end
-        puts
       end
     end
   end
