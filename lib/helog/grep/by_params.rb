@@ -61,7 +61,7 @@ module Helog
           logfile_uuid_table.each do |logfile, uuids|
             u = uuids.map { |u| "-e '#{u}'" }.join(" ")
             cmd = ("zgrep #{u} #{logfile}").gsub(']', '\]').gsub('[', '\[')
-            pids << fork do
+            pids << fork do # TODO parallel使ったほうがいいんでは
               Open3.popen2(cmd) do |_stdin, stdout, wait_thr|
                 puts "Executing... #{cmd}"
                 buffer = []

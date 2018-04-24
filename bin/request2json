@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+
+# README:
+#   uuid で抽出された複数に渡る1リクエストのログを1つのJSONに変換する
+#
+#   [5e46c0ed-11d4-45e7-bdab-64415619ae90] Started GET "/api/3/hhhhhhhh" for 2
+#   [5e46c0ed-11d4-45e7-bdab-64415619ae90] Processing by Api3Controller#index_checkouts as JSON
+#   [5e46c0ed-11d4-45e7-bdab-64415619ae90]   Parameters: {"since"=>"2018-04-22T15:00:00Z"}
+#   [5e46c0ed-11d4-45e7-bdab-64415619ae90] [account_id:999999999]
+#   [5e46c0ed-11d4-45e7-bdab-64415619ae90] Completed 200 OK in 299ms (Views: 42.5ms | ActiveRecord: 122.5ms)
+#   => { 'account_id': 9999999999,
+#        'params': {"since"=>"2018-04-22T15:00:00Z", "until"=>"2018-04-23T14:59:59Z", "limit"=>"10", },
+#        'messages': [ 'Started GET "/api/3/gggghfjkghfdk" for 219.117.231.81 at 2018-04-23 16:58:44 +0000',
+#        'Processing by AController#index as JSON',
+#                     'Parameters: {"since"=>"2018-04-22T15:00:00Z"',
+#                     'Completed 200 OK in 299ms (Views: 42.5ms | ActiveRecord: 122.5ms)']
+#       }
+# Usage:
+#   bin/request2json request.log > request.json
+#   (※入力はuuidでソート済み、とする)
+
+
+require "bundler/setup"
+require 'helog/cli/request2json'
+
+filepath = ARGV.first
+
+Helog::CLI::Request2JSON.new(filepath).run
