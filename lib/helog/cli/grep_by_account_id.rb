@@ -1,8 +1,8 @@
 require 'open3'
 
 module Helog
-  module Grep
-    class ByAccountId
+  module CLI
+    class GrepByAccountId
       def initialize(accout_id: nil, path: [])
         if accout_id.nil?
           raise('検索対象のaccount_idがありません')

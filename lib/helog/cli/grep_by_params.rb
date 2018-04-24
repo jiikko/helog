@@ -2,8 +2,8 @@ require 'open3'
 require 'fileutils'
 
 module Helog
-  module Grep
-    class ByParams
+  module CLI
+    class GrepByParams
       def initialize(params, path)
         @without_debug_log = true # params[:without_debug_log]
         @patterns = params[:e]
@@ -24,7 +24,7 @@ module Helog
         patterns_for_cmd = @patterns.map { |x| " -e #{x} " }.join
         cmd_after = []
         if @without_debug_log
-          cmd_after << 'grep -v DEBUG | grep -v heroku | grep -v heroku'
+          cmd_after << 'grep -v DEBUG | grep -v heroku'
         end
         if @and_pattern
           cmd_after << "grep #{@and_pattern}"

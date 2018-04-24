@@ -5,7 +5,7 @@
 #
 # Usage:
 #   bin/zgrep_by_params -e '/api/3/hoge' --and limit 'app_log/2018/04/24-0.log.gz app_log/2018/04/24-1.log.gz'
-#     => zgrep  -e /api/3/hoge  app_log/2018/04/24-0.log.gz app_log/2018/04/24-1.log.gz | grep -v DEBUG | grep -v heroku | grep -v heroku | grep limit
+#     => zgrep  -e /api/3/hoge  app_log/2018/04/24-0.log.gz app_log/2018/04/24-1.log.gz | grep -v DEBUG | grep -v heroku | grep limit
 
 require "bundler/setup"
 require 'helog/grep/by_params'
@@ -19,4 +19,4 @@ opt.on('--without_debug_log') {|v| params[:without_debug_log] = v }
 opt.parse!(ARGV)
 path = ARGV.last
 
-Helog::Grep::ByParams.new(params, path).run
+Helog::CLI::GrepByParams.new(params, path).run
