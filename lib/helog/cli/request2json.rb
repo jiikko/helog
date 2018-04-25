@@ -63,18 +63,20 @@ module Helog
 
       def run
         requests = []
-        File.open(@filepath).each_line.reduce([]) do |a, x|
-          line = Line.new(x)
-          if a.last.nil?
-            a << line
-            next(a)
-          end
-          if a.last.uuid == line.uuid # uuidが同じ場合は同一リクエストが続いている
-            a << line
-            next(a)
-          else
-            requests << Request.new(a)
-            next([])
+        @filepath.split(' ').each do |filepath|
+          File.open(filepath).each_line.reduce([]) do |a, x|
+            line = Line.new(x)
+            if a.last.nil?
+              a << line
+              next(a)
+            end
+            if a.last.uuid == line.uuid # uuidが同じ場合は同一リクエストが続いている
+              a << line
+              next(a)
+            else
+              requests << Request.new(a)
+              next([])
+            end
           end
         end
         puts requests.map(&:to_json).join("\n")
