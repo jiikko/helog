@@ -30,7 +30,7 @@ module Helog
           cmd_after << "grep #{@and_pattern}"
         end
         string_cmd_after = cmd_after.map { |x| "| #{x} " }.join
-        cmd = "zgrep #{patterns_for_cmd} #{@paths.join(' ')} #{string_cmd_after}"
+        cmd = "zgrep -E #{patterns_for_cmd} #{@paths.join(' ')} #{string_cmd_after}"
 
         logfile_uuid_table = {}
         Open3.popen2(cmd) do |_stdin, stdout, wait_thr|
@@ -38,6 +38,10 @@ module Helog
           while line = stdout.gets
             logfile = nil
             uuid = nil
+            if /^\d\d\d\d-\d\d/ =~ line
+              raise '[BUG] 引数のファイルが１つだと1行からファイル名を取得できない'
+              # if /^([^:]+):/ =~ line も直す必要がある
+            end
             if /^([^:]+):/ =~ line
               logfile = $1
             else
@@ -59,17 +63,20 @@ module Helog
           FileUtils.mkdir_p('output')
           pids = []
           logfile_uuid_table.each do |logfile, uuids|
-            u = uuids.map { |u| "-e '#{u}'" }.join(" ")
-            cmd = ("zgrep #{u} #{logfile}").gsub(']', '\]').gsub('[', '\[')
             pids << fork do # TODO parallel使ったほうがいいんでは
-              Open3.popen2(cmd) do |_stdin, stdout, wait_thr|
-                puts "Executing... #{cmd}"
-                buffer = []
-                while line = stdout.gets
-                  buffer << line
+              uuids.each_slice(200).with_index do |part_uuids, index|
+                part_uuids_of_cmd = part_uuids.map { |u| "-e '#{u}'" }.join(" ")
+                cmd = "zgrep #{part_uuids_of_cmd} #{logfile}".gsub(']', '\]').gsub('[', '\[')
+                require 'pry'
+                Open3.popen2(cmd) do |_stdin, stdout, wait_thr|
+                  puts "Executing... #{cmd}"
+                  buffer = []
+                  while line = stdout.gets
+                    buffer << line
+                  end
+                  File.write("./output/#{logfile.gsub('/', '_')}_by_params_#{index}.log", buffer.join)
+                  puts "finiesh!: #{logfile}"
                 end
-                File.write("./output/#{logfile.gsub('/', '_')}_by_params.log", buffer.join)
-                puts "finiesh!: #{logfile}"
               end
             end
           end

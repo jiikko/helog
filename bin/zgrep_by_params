@@ -8,7 +8,7 @@
 #     => zgrep  -e /api/3/hoge  app_log/2018/04/24-0.log.gz app_log/2018/04/24-1.log.gz | grep -v DEBUG | grep -v heroku | grep limit
 
 require "bundler/setup"
-require 'helog/grep/by_params'
+require 'helog/cli/grep_by_params'
 require 'optparse'
 
 params = {}
