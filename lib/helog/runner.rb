@@ -49,33 +49,38 @@ module Helog
     def start_cmd_thread
       @cmd_thread =
         Thread.start do
+          fds = nil
+          wait_thr_for_kill = nil
+          logger = get_logger
           loop do
-            logging_with do |logger|
-              # https://docs.ruby-lang.org/ja/latest/method/Open3/m/popen3.html
-              Open3.popen2(@cmd) do |_stdin, stdout, wait_thr|
-                while line = stdout.gets
-                  Thread.handle_interrupt(RuntimeError => :never) do
-                    logger.info line
-                  end
+            # https://docs.ruby-lang.org/ja/latest/method/Open3/m/popen3.html
+            Open3.popen2(@cmd) do |_stdin, stdout, wait_thr|
+              fds = [_stdin, stdout]
+              wait_thr_for_kill = wait_thr
+              while line = stdout.gets
+                Thread.handle_interrupt(RuntimeError => :never) do
+                  logger.info line
                 end
               end
-              puts 'process exited. restart!'
-              sleep(3)
             end
+            puts 'process exited. restart!'
+            sleep(3)
           end
+        ensure
+          # called by Thread#kill
+          logger.close
+          fds.each(&:close)
+          Process.kill(:KILL, wait_thr_for_kill.pid)
         end
     end
 
-    def logging_with(&block)
+    def get_logger
       # https://docs.ruby-lang.org/ja/latest/library/logger.html
       logger = Logger.new(@logfilename, 100, LOGGER_ROTATE_SIZE)
       logger.formatter = proc { |severity, datetime, progname, msg| msg }
-      yield(logger)
-    ensure
-      logger.close
+      logger
     end
 
-    # FIXME アップロード対象のファイルの検出はポーリングしているが、ディレクトリを監視してもいいかも. 性能がでないなら検討する
     def start_log_upload_thread
       loop do
         # 番号が大きい順に並び替える. 番号大きいログの方が古い
@@ -88,20 +93,19 @@ module Helog
     end
 
     def start_cmd_watch_thread
-      t =
-        Thread.start do
-          puts 'start watch!'
-          loop do
-            logfile = File.open(@logfilename)
-            if (Time.now - logfile.mtime) > 20
-              puts 'restart! from cmd_watcher'
-              restart_cmd
-              sleep(10) # 起動時はすぐにはログを書き込まないのでちょっと待つ
-            end
-            logfile.close
-            sleep(4)
+      Thread.start do
+        puts 'start watch!'
+        loop do
+          logfile = File.open(@logfilename)
+          if (Time.now - logfile.mtime) > 20
+            puts 'restart! from cmd_watcher'
+            restart_cmd
+            sleep(10) # 起動時はすぐにはログを書き込まないのでちょっと待つ
           end
+          logfile.close
+          sleep(4)
         end
+      end
     end
   end
 end
