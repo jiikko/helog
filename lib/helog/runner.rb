@@ -50,17 +50,14 @@ module Helog
       @cmd_thread =
         Thread.start do
           fds = nil
-          wait_thr_for_kill = nil
           logger = get_logger
           loop do
             # https://docs.ruby-lang.org/ja/latest/method/Open3/m/popen3.html
             Open3.popen2(@cmd) do |_stdin, stdout, wait_thr|
               fds = [_stdin, stdout]
-              wait_thr_for_kill = wait_thr
+              @cmd_pid = wait_thr.pid
               while line = stdout.gets
-                Thread.handle_interrupt(RuntimeError => :never) do
-                  logger.info line
-                end
+                logger.info line
               end
             end
             puts 'process exited. restart!'
@@ -70,7 +67,10 @@ module Helog
           # called by Thread#kill
           logger.close
           fds.each(&:close)
-          Process.kill(:KILL, wait_thr_for_kill.pid)
+          begin
+            Process.kill(:KILL, @cmd_pid)
+          rescue Errno::ESRCH, Errno::ECHILD
+          end
         end
     end
 

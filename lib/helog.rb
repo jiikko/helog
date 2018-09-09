@@ -3,6 +3,7 @@ require "helog/runner"
 require 'helog/google_drive_mixin'
 require 'helog/fetcher'
 require 'helog/google_drive_uploader'
+require 'support/logging'
 
 module Helog
   LOGGER_ROTATE_SIZE = 1000 * 1024 * 1024 # 1GB
