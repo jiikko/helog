@@ -2,9 +2,12 @@ require 'logger'
 require 'open3'
 require 'fileutils'
 require 'thread'
+require 'helog/singnal_handling'
 
 module Helog
   class Runner
+    include SingnalHandling
+
     PID_PATH = 'tmp/pid'
 
     def initialize(cmd, logfilename)
@@ -24,7 +27,10 @@ module Helog
         start_cmd_thread
         start_cmd_watch_thread
         start_log_upload_thread
-        loop { sleep(10) }
+        loop do
+          handle_signals
+          sleep(1)
+        end
       ensure
         FileUtils.rm_rf(PID_PATH)
       end
@@ -33,6 +39,10 @@ module Helog
     def restart_cmd
       @cmd_thread.kill
       start_cmd_thread
+    end
+
+    def shutdown!
+      @shutdown = true
     end
 
     private
@@ -83,6 +93,7 @@ module Helog
 
     def start_log_upload_thread
       loop do
+        break if @shutdown
         # 番号が大きい順に並び替える. 番号大きいログの方が古い
         filenames = Dir.glob("#{@logfilename}.*").sort_by { |filename| - filename.split('.')[-1].to_i }
         filenames.each do |filename|
@@ -96,6 +107,7 @@ module Helog
       Thread.start do
         puts 'start watch!'
         loop do
+          break if @shutdown
           logfile = File.open(@logfilename)
           if (Time.now - logfile.mtime) > 20
             puts 'restart! from cmd_watcher'
