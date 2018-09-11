@@ -23,14 +23,11 @@ module Helog
 
     def run
       write_pid_file
+      register_signal_handlers
       begin
         start_cmd_thread
         start_cmd_watch_thread
-        start_log_upload_thread
-        loop do
-          handle_signals
-          sleep(1)
-        end
+        start_upload_log
       ensure
         FileUtils.rm_rf(PID_PATH)
       end
@@ -91,8 +88,9 @@ module Helog
       logger
     end
 
-    def start_log_upload_thread
+    def start_upload_log
       loop do
+        handle_signals
         break if @shutdown
         # 番号が大きい順に並び替える. 番号大きいログの方が古い
         filenames = Dir.glob("#{@logfilename}.*").sort_by { |filename| - filename.split('.')[-1].to_i }
@@ -100,6 +98,7 @@ module Helog
           GoogleDriveUploader.new(filename).run
         end
         sleep(1)
+      rescue Interrupt
       end
     end
 
