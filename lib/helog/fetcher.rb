@@ -31,7 +31,7 @@ module Helog
     def sort_by(paths)
       table =
         {}.tap do |h|
-          paths.map { |path|  %r!(\d{4}/\d\d/\d\d)-(\d+)\.log\.gz! =~ path; h["#{$1}-#{$2}"] = path }
+          paths.map { |path|  %r!(\d{4}/\d\d/\d\d)-(\d+)\.log\.gz! =~ path; h[[$1, $2.to_i]] = path }
         end
       table.sort.map(&:last)
     end
