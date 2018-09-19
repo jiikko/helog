@@ -1,6 +1,7 @@
 require "bundler/setup"
 require "helog"
 require "pry"
+require 'support/logging'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
