@@ -53,6 +53,7 @@ RSpec.describe Helog::Fetcher do
       paths = [ 'app_log/2018/02/10-2.log.gz',
                 'app_log/2018/02/10-0.log.gz',
                 'app_log/2018/02/12-9.log.gz',
+                'app_log/2018/02/12-10.log.gz',
                 'app_log/2018/02/10-1.log.gz',
                 'app_log/2018/02/10-8.log.gz',
                 'app_log/2018/02/12-0.log.gz',
@@ -64,6 +65,7 @@ RSpec.describe Helog::Fetcher do
         'app_log/2018/02/10-8.log.gz',
         'app_log/2018/02/12-0.log.gz',
         'app_log/2018/02/12-9.log.gz',
+        'app_log/2018/02/12-10.log.gz',
       ]
       expect(expected).to eq(Helog::Fetcher.new(dates: []).sort_by(paths))
     end
