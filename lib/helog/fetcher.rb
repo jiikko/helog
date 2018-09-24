@@ -6,6 +6,7 @@ module Helog
     include Helog::GoogleDriveMixin
 
     attr_accessor :dates_to_s
+
     def initialize(dates: )
       self.dates_to_s = dates
     end

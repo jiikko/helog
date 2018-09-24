@@ -2,6 +2,10 @@ require "spec_helper"
 require "parallel"
 
 RSpec.describe Helog::Fetcher do
+  Helog::Fetcher.class_eval do
+    prepend DummyGoogleDriveMixin
+  end
+
   describe '#run' do
     context 'when empty ARGV' do
       subject { Helog.fetch(dates: []) }

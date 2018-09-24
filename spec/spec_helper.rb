@@ -2,6 +2,7 @@ require "bundler/setup"
 require "helog"
 require "pry"
 require 'support/logging'
+require 'support/dummy_google_drive_mixin'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
