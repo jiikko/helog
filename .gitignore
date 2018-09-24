@@ -11,7 +11,8 @@
 # rspec failure tracking
 .rspec_status
 gv_config.json
-log*
+log/*
+logs/*
 app_log
 provisioning/.vagrant/
 bin/run
