@@ -83,7 +83,7 @@ module Helog
 
     def get_logger
       # https://docs.ruby-lang.org/ja/latest/library/logger.html
-      logger = Logger.new(@logfilename, 100, LOGGER_ROTATE_SIZE)
+      logger = Logger.new(@logfilename, 100, LOGGER_ROTATE_SIZE.to_i)
       logger.formatter = proc { |severity, datetime, progname, msg| msg }
       logger
     end
