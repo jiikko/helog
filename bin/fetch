@@ -1,5 +1,11 @@
 #!/usr/bin/env ruby
 
+# Usage:
+#   1日のログを取得する
+#     LOG_ROOT_DIR=server-log bin/fetch 2019-4-6
+#   4月6日~4月11日のログをすべて取得する
+#     LOG_ROOT_DIR=server-log bin/fetch 2019-4-6 2019-4-11
+
 require "bundler/setup"
 require "helog"
 require "parallel"
