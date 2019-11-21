@@ -2,12 +2,16 @@
 * heroku logsを実行して適宜google driveにアップロードするコマンドです
 
 ## Installation
-* `bundle install` && `cp gv_config.sample.json gv_config.json` && `bin/setup_google_drive`
-  * google driveへのアクセス権限を取得する
 
-### google api のトークンを発行する(初回のみ)
-* 下記を参照しトークンを作成してgv_config.json にセットする
-  * https://github.com/gimite/google-drive-ruby/blob/master/doc/authorization.md
+```
+$ bundle install
+
+# google drive apiのアクセストークンを取得するためのコマンド。画面に従って認証してください。
+$ bin/setup_google_drive
+```
+
+### google driveのapiを使うためのプロジェクト作成する(初回のみ)
+https://github.com/gimite/google-drive-ruby/blob/master/doc/authorization.md
 
 ## Usage
 ```
