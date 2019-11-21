@@ -14,10 +14,20 @@ $ bin/setup_google_drive
 https://github.com/gimite/google-drive-ruby/blob/master/doc/authorization.md
 
 ## Usage
+### ログのアップロード
 ```
-$ git clone https://github.com/jiikko/helog
-$ LOG_ROOT_DIR=app-log bin/helog 'heroku logs -t --app hoge-app' logs/heroku.log
+$ HEROKU_LOGS_COLOR=0 LOG_ROOT_DIR=app-log bin/helog 'heroku logs -t --app hoge-app' logs/heroku.log
 ```
+
+### ログのダウンロード
+```
+# 1日分だけ
+$ LOG_ROOT_DIR=app-log bin/fetch 2019-11-14
+
+# 2019-11-10~2019-11-14の期間を指定できる
+$ LOG_ROOT_DIR=app-log bin/fetch 2019-11-10 2019-11-14
+```
+
 
 ## 仕様
 信頼はかなり悪いです。  
