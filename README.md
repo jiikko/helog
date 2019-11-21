@@ -15,6 +15,10 @@ $ git clone https://github.com/jiikko/helog
 $ LOG_ROOT_DIR=app-log bin/helog 'heroku logs -t --app hoge-app' logs/heroku.log
 ```
 
+## 仕様
+信頼はかなり悪いです。  
+というのもheroku logsコマンド実行中に接続が切れているのかログが落ちてこなくなることがあり、n秒ログファイルに書き込みがなかったらThreadを再実行しているからです。
+
 ## 動作上のメモ
 * google drive へのアップロードは
   * drive上にある日付ディレクトリの最大添字+1にしたファイル名にして保存していく
