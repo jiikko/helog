@@ -2,12 +2,16 @@
 * heroku logsを実行して適宜google driveにアップロードするコマンドです
 
 ## Installation
-* `bundle install` && `cp gv_config.sample.json gv_config.json` && `bin/setup_google_drive`
-  * google driveへのアクセス権限を取得する
 
-### google api のトークンを発行する(初回のみ)
-* 下記を参照しトークンを作成してgv_config.json にセットする
-  * https://github.com/gimite/google-drive-ruby/blob/master/doc/authorization.md
+```
+$ bundle install
+
+# google drive apiのアクセストークンを取得するためのコマンド。画面に従って認証してください。
+$ bin/setup_google_drive
+```
+
+### google driveのapiを使うためのプロジェクト作成する(初回のみ)
+https://github.com/gimite/google-drive-ruby/blob/master/doc/authorization.md
 
 ## Usage
 ```
@@ -17,7 +21,7 @@ $ LOG_ROOT_DIR=app-log bin/helog 'heroku logs -t --app hoge-app' logs/heroku.log
 
 ## 仕様
 信頼はかなり悪いです。  
-というのもheroku logsコマンド実行中に接続が切れているのかログが落ちてこなくなることがあり、n秒ログファイルに書き込みがなかったらThreadを再実行しているからです。
+というのもheroku logsコマンド実行中に接続が切れているのかログが落ちてこなくなることがあり、n秒ログファイルに書き込みがなかったらThreadを再起動しているからです。
 
 ## 動作上のメモ
 * google drive へのアップロードは
