@@ -17,7 +17,7 @@ $ LOG_ROOT_DIR=app-log bin/helog 'heroku logs -t --app hoge-app' logs/heroku.log
 
 ## 仕様
 信頼はかなり悪いです。  
-というのもheroku logsコマンド実行中に接続が切れているのかログが落ちてこなくなることがあり、n秒ログファイルに書き込みがなかったらThreadを再実行しているからです。
+というのもheroku logsコマンド実行中に接続が切れているのかログが落ちてこなくなることがあり、n秒ログファイルに書き込みがなかったらThreadを再起動しているからです。
 
 ## 動作上のメモ
 * google drive へのアップロードは
